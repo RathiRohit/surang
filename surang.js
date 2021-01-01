@@ -11,6 +11,7 @@ class Surang extends EventEmitter {
 
     this.wsURL = `wss://${this.server}`;
     this.basePath = `https://${this.server}`;
+    this.localServer = `http://localhost:${this.localPort}`;
   }
 
   connect() {

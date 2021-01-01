@@ -2,11 +2,11 @@ const WebSocket = require('ws');
 const Surang = require('./surang');
 
 describe('Surang', () => {
-  let wsMock;
+  const wsMock = WebSocket.mock;
   let surangClient;
 
   beforeEach(async () => {
-    wsMock = WebSocket.mock;
+    wsMock.clear();
     surangClient = new Surang({
       authKey: 'TEST_AUTH_KEY',
       port: 8000,
@@ -58,5 +58,17 @@ describe('Surang', () => {
       method: 'GET',
       url: '/test/request/goes?where=here',
     }));
+  });
+
+  describe('connect', () => {
+    it('should connect to ws server at given url with correct auth key', () => {
+      surangClient.connect();
+
+      expect(wsMock.instance.url).toBe('wss://surang.example.com');
+      expect(wsMock.instance.protocols).toEqual([]);
+      expect(wsMock.instance.options).toEqual({
+        headers: { authorization: 'TEST_AUTH_KEY' },
+      });
+    });
   });
 });
