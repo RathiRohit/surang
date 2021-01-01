@@ -9,7 +9,10 @@
   "main": "./surang.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests --coverage"
+  },
+  "dependencies": {
+    "ws": "^7.4.2"
   },
   "devDependencies": {
     "eslint": "^7.16.0",
