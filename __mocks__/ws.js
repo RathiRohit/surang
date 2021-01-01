@@ -8,6 +8,7 @@ class WebSocket extends EventEmitter {
     this.protocols = protocols;
     this.options = options;
 
+    this.send = jest.fn();
     WebSocket.mock.instance = this;
   }
 }

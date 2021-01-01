@@ -12,6 +12,7 @@
     "test": "jest --passWithNoTests --coverage"
   },
   "dependencies": {
+    "node-fetch": "^2.6.1",
     "ws": "^7.4.2"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '/node_modules/',
   ],
-  coverageProvider: 'v8',
+  coverageProvider: 'babel',
   coverageThreshold: {
     global: {
       branches: 90,

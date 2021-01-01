@@ -1,5 +1,7 @@
 const EventEmitter = require('events');
+const fetch = require('node-fetch');
 const WebSocket = require('ws');
+const transform = require('./lib/transformer');
 
 class Surang extends EventEmitter {
   constructor(options) {
@@ -11,6 +13,7 @@ class Surang extends EventEmitter {
 
     this.wsURL = `wss://${this.server}`;
     this.basePath = `https://${this.server}`;
+    this.hostHeader = `localhost:${this.localPort}`;
     this.localServer = `http://localhost:${this.localPort}`;
   }
 
@@ -23,12 +26,19 @@ class Surang extends EventEmitter {
       this.emit('connect', this.basePath);
     });
 
-    this.connection.on('message', (data) => {
-      const request = JSON.parse(data);
+    this.connection.on('message', async (data) => {
+      const message = JSON.parse(data);
       this.emit('incoming', {
-        method: request.method,
-        url: request.url,
+        method: message.method,
+        url: message.url,
       });
+
+      const response = await fetch(
+        this.localServer + message.url,
+        transform.toRequest(message, this.hostHeader),
+      );
+      const responseMessage = await transform.toMessage(response);
+      this.connection.send(JSON.stringify(responseMessage));
     });
 
     this.connection.on('close', (_code, reason) => {
