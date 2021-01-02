@@ -7,13 +7,19 @@
   },
   "author": "Rohit Rathi <rathirohitg1997@gmail.com>",
   "main": "./surang.js",
+  "bin": {
+    "surang": "./bin/cli.js"
+  },
   "scripts": {
     "lint": "eslint .",
     "test": "jest --coverage"
   },
   "dependencies": {
+    "fs-extra": "^9.0.1",
+    "inquirer": "^7.3.3",
     "node-fetch": "^2.6.1",
-    "ws": "^7.4.2"
+    "ws": "^7.4.2",
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "eslint": "^7.16.0",
