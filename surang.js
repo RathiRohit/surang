@@ -4,12 +4,12 @@ const WebSocket = require('ws');
 const transform = require('./lib/transformer');
 
 class Surang extends EventEmitter {
-  constructor(options) {
+  constructor(port, options) {
     super();
 
-    this.authKey = options.authKey;
-    this.localPort = options.port;
+    this.localPort = port;
     this.server = options.server;
+    this.authKey = options.authKey;
 
     this.wsURL = `wss://${this.server}`;
     this.basePath = `https://${this.server}`;
@@ -48,6 +48,12 @@ class Surang extends EventEmitter {
     this.connection.on('error', (error) => {
       this.emit('error', error);
     });
+  }
+
+  disconnect() {
+    if (this.connection) {
+      this.connection.terminate();
+    }
   }
 }
 

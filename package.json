@@ -9,7 +9,7 @@
   "main": "./surang.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "jest --passWithNoTests --coverage"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "node-fetch": "^2.6.1",
@@ -26,7 +26,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test"
     }
   },
   "lint-staged": {

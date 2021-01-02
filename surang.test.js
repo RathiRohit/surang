@@ -36,11 +36,10 @@ describe('Surang', () => {
   const wsMock = WebSocket.mock;
   let surangClient;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     wsMock.clear();
-    surangClient = new Surang({
+    surangClient = new Surang(8000, {
       authKey: 'TEST_AUTH_KEY',
-      port: 8000,
       server: 'surang.example.com',
     });
   });
@@ -126,6 +125,22 @@ describe('Surang', () => {
       expect(wsMock.instance.options).toEqual({
         headers: { authorization: 'TEST_AUTH_KEY' },
       });
+    });
+  });
+
+  describe('disconnect', () => {
+    it('should disconnect from ws server', () => {
+      surangClient.connect();
+
+      surangClient.disconnect();
+
+      expect(wsMock.instance.terminate).toHaveBeenCalledTimes(1);
+    });
+
+    it('should do nothing if there no connection present', () => {
+      surangClient.disconnect();
+
+      expect(wsMock.instance).toBeNull();
     });
   });
 });
