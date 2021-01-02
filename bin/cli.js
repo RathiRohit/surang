@@ -4,6 +4,7 @@
 const yargs = require('yargs');
 const config = require('../lib/config');
 const Surang = require('../surang');
+const log = require('../lib/logger');
 
 function startSurang(argv) {
   if (typeof argv.port !== 'number') {
@@ -17,6 +18,13 @@ function startSurang(argv) {
       server: argv.host,
       authKey: argv['auth-key'],
     });
+
+    surang.once('connect', log.onSuccessfulConnection);
+    surang.once('disconnect', log.onDisconnection);
+    surang.on('error', log.onError);
+    if (argv.verbose) {
+      surang.on('incoming', log.onNewRequest);
+    }
 
     surang.connect();
   } catch (error) {
