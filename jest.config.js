@@ -1,8 +1,15 @@
 module.exports = {
   clearMocks: true,
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
+  collectCoverageFrom: [
+    '**/*.js',
+    '!**/*.test.js',
+    '!**/node_modules/**',
+    '!**/coverage/**',
+    '!**/__mocks__/**',
+    '!**/bin/**',
+    '!.eslintrc.js',
+    '!jest.config.js',
   ],
   coverageProvider: 'babel',
   coverageThreshold: {
