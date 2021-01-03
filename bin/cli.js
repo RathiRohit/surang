@@ -17,10 +17,12 @@ function startSurang(argv) {
     const surang = new Surang(argv.port, {
       server: argv.host,
       authKey: argv['auth-key'],
+      secure: argv.secure,
     });
 
     surang.once('connect', log.onSuccessfulConnection);
     surang.once('disconnect', log.onDisconnection);
+    surang.once('reject', log.onReject);
     surang.on('error', log.onError);
     if (argv.verbose) {
       surang.on('incoming', log.onNewRequest);

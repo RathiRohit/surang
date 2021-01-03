@@ -11,10 +11,10 @@ class Surang extends EventEmitter {
     this.server = options.server;
     this.authKey = options.authKey;
 
-    this.wsURL = `wss://${this.server}`;
-    this.basePath = `https://${this.server}`;
     this.hostHeader = `localhost:${this.localPort}`;
     this.localServer = `http://localhost:${this.localPort}`;
+    this.wsURL = `ws${options.secure ? 's' : ''}://${this.server}`;
+    this.basePath = `http${options.secure ? 's' : ''}://${this.server}`;
   }
 
   connect() {
@@ -41,8 +41,12 @@ class Surang extends EventEmitter {
       this.connection.send(JSON.stringify(responseMessage));
     });
 
-    this.connection.on('close', (_code, reason) => {
-      this.emit('disconnect', reason);
+    this.connection.on('close', () => {
+      this.emit('disconnect');
+    });
+
+    this.connection.on('unexpected-response', (_req, res) => {
+      this.emit('reject', res.headers['x-error']);
     });
 
     this.connection.on('error', (error) => {

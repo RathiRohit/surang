@@ -11,6 +11,8 @@
     "surang": "./bin/cli.js"
   },
   "scripts": {
+    "start": "node ./bin/cli.js start",
+    "config": "node ./bin/cli.js config",
     "lint": "eslint .",
     "test": "jest --coverage"
   },

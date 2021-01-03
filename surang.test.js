@@ -41,6 +41,7 @@ describe('Surang', () => {
     surangClient = new Surang(8000, {
       authKey: 'TEST_AUTH_KEY',
       server: 'surang.example.com',
+      secure: true,
     });
   });
 
@@ -54,14 +55,14 @@ describe('Surang', () => {
     wsMock.emitOpen();
   });
 
-  it('should emit "disconnect" event on connection close', (done) => {
-    surangClient.on('disconnect', (reason) => {
-      expect(reason).toBe('TEST_REASON_FOR_DISCONNECTION');
-      done();
-    });
+  it('should emit "disconnect" event on connection close', () => {
+    const emitSpy = jest.spyOn(surangClient, 'emit');
 
     surangClient.connect();
-    wsMock.emitClose('TEST_REASON_FOR_DISCONNECTION');
+    wsMock.emitClose();
+
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+    expect(emitSpy).toHaveBeenCalledWith('disconnect');
   });
 
   it('should emit "error" event on error scenarios', (done) => {
@@ -85,6 +86,16 @@ describe('Surang', () => {
 
     surangClient.connect();
     wsMock.emitMessage(JSON.stringify(incomingRequest));
+  });
+
+  it('should emit "reject" event on rejection from server', (done) => {
+    surangClient.on('reject', (reason) => {
+      expect(reason).toBe('TEST_REASON_FOR_REJECTION');
+      done();
+    });
+
+    surangClient.connect();
+    wsMock.emitUnexpectedResponse('TEST_REASON_FOR_REJECTION');
   });
 
   it('should forward incoming request to local server', (done) => {
@@ -121,6 +132,21 @@ describe('Surang', () => {
       surangClient.connect();
 
       expect(wsMock.instance.url).toBe('wss://surang.example.com');
+      expect(wsMock.instance.protocols).toEqual([]);
+      expect(wsMock.instance.options).toEqual({
+        headers: { authorization: 'TEST_AUTH_KEY' },
+      });
+    });
+
+    it('should connect to ws server at given url when secure is false', () => {
+      surangClient = new Surang(8000, {
+        authKey: 'TEST_AUTH_KEY',
+        server: 'surang.example.com',
+        secure: false,
+      });
+      surangClient.connect();
+
+      expect(wsMock.instance.url).toBe('ws://surang.example.com');
       expect(wsMock.instance.protocols).toEqual([]);
       expect(wsMock.instance.options).toEqual({
         headers: { authorization: 'TEST_AUTH_KEY' },

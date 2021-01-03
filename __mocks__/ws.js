@@ -21,8 +21,11 @@ WebSocket.mock = {
   },
   emitOpen: () => WebSocket.mock.instance.emit('open'),
   emitMessage: (testRequestMsg) => WebSocket.mock.instance.emit('message', testRequestMsg),
-  emitClose: (testReason) => WebSocket.mock.instance.emit('close', 1008, testReason),
+  emitClose: () => WebSocket.mock.instance.emit('close'),
   emitError: (testError) => WebSocket.mock.instance.emit('error', testError),
+  emitUnexpectedResponse: (reason) => WebSocket.mock.instance.emit('unexpected-response', {}, {
+    headers: { 'x-error': reason },
+  }),
 };
 
 module.exports = WebSocket;
