@@ -33,15 +33,19 @@ class Surang extends EventEmitter {
         url: message.url,
       });
 
-      const response = await fetch(
-        this.localServer + message.url,
-        transform.toRequest(message, this.hostHeader),
-      );
-      const responseMessage = await transform.toMessage(response);
-      this.connection.send(JSON.stringify({
-        ...responseMessage,
-        reqID: message.reqID,
-      }));
+      try {
+        const response = await fetch(
+          this.localServer + message.url,
+          transform.toRequest(message, this.hostHeader),
+        );
+        const responseMessage = await transform.toMessage(response);
+        this.connection.send(JSON.stringify({
+          ...responseMessage,
+          reqID: message.reqID,
+        }));
+      } catch (e) {
+        this.emit('error', e);
+      }
     });
 
     this.connection.on('close', () => {

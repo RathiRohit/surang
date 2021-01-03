@@ -116,6 +116,17 @@ describe('Surang', () => {
     wsMock.emitMessage(JSON.stringify(incomingRequest));
   });
 
+  it('should emit "error" event on fetch error', (done) => {
+    fetch.mockRejectedValueOnce('TEST_ERROR_IN_FETCH');
+    surangClient.on('error', (reason) => {
+      expect(reason).toBe('TEST_ERROR_IN_FETCH');
+      done();
+    });
+
+    surangClient.connect();
+    wsMock.emitMessage(JSON.stringify(incomingRequest));
+  });
+
   it('should send local server response back through tunnel', (done) => {
     surangClient.on('incoming', () => {
       setTimeout(() => {
