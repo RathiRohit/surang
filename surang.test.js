@@ -4,6 +4,7 @@ const Surang = require('./surang');
 const transform = require('./lib/transformer');
 
 const incomingRequest = {
+  reqID: 'some-random-uuid-comes-here',
   method: 'POST',
   url: '/test/request/goes?where=here',
   headers: {
@@ -20,6 +21,7 @@ const incomingRequest = {
 };
 
 const response = {
+  reqID: 'some-random-uuid-comes-here',
   status: 200,
   statusText: 'SUCCESS',
   type: 'application/json',
@@ -118,7 +120,7 @@ describe('Surang', () => {
     surangClient.on('incoming', () => {
       setTimeout(() => {
         expect(wsMock.instance.send).toHaveBeenCalledTimes(1);
-        expect(wsMock.instance.send).toHaveBeenCalledWith(JSON.stringify(response));
+        expect(JSON.parse(wsMock.instance.send.mock.calls[0][0])).toEqual(response);
         done();
       }, 0);
     });

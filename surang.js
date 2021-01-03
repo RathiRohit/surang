@@ -38,7 +38,10 @@ class Surang extends EventEmitter {
         transform.toRequest(message, this.hostHeader),
       );
       const responseMessage = await transform.toMessage(response);
-      this.connection.send(JSON.stringify(responseMessage));
+      this.connection.send(JSON.stringify({
+        ...responseMessage,
+        reqID: message.reqID,
+      }));
     });
 
     this.connection.on('close', () => {
