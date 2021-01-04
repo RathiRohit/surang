@@ -1,11 +1,16 @@
 {
   "name": "surang",
+  "description": "Self-hostable WebSocket based tunneling solution to expose your localhost.",
   "version": "0.0.1",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/RathiRohit/surang.git"
   },
   "author": "Rohit Rathi <rathirohitg1997@gmail.com>",
+  "contributors": [
+    "Rohit Rathi <rathirohitg1997@gmail.com>"
+  ],
   "main": "./surang.js",
   "bin": {
     "surang": "./bin/cli.js"
