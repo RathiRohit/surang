@@ -1,7 +1,9 @@
 <p align="center">
   <img width="40%" src="surang.png" alt="Surang logo"/>
-  <br/><br/>
-  <div>A self-hostable WebSocket based tunneling solution to expose your localhost. 🚀</div>
+</p>
+
+<p align="center">
+  A self-hostable WebSocket based tunneling solution to expose your localhost. 🚀
 </p>
 
 > This is Surang client repository.
