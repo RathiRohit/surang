@@ -3,6 +3,7 @@ const fetch = require('node-fetch');
 const WebSocket = require('ws');
 const transform = require('./lib/transformer');
 const Heart = require('./lib/Heart');
+const { surangVersion } = require('./lib/version');
 
 const HEART_BEAT_INTERVAL = 45000;
 
@@ -26,7 +27,10 @@ class Surang extends EventEmitter {
     }
 
     this.connection = new WebSocket(this.wsURL, [], {
-      headers: { authorization: this.authKey },
+      headers: {
+        authorization: this.authKey,
+        'x-surang-version': surangVersion(),
+      },
     });
     this.heart = new Heart(this.connection, HEART_BEAT_INTERVAL);
 

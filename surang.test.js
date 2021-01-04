@@ -161,7 +161,10 @@ describe('Surang', () => {
       expect(wsMock.instance.url).toBe('wss://surang.example.com');
       expect(wsMock.instance.protocols).toEqual([]);
       expect(wsMock.instance.options).toEqual({
-        headers: { authorization: 'TEST_AUTH_KEY' },
+        headers: {
+          authorization: 'TEST_AUTH_KEY',
+          'x-surang-version': '0',
+        },
       });
     });
 
@@ -176,7 +179,10 @@ describe('Surang', () => {
       expect(wsMock.instance.url).toBe('ws://surang.example.com');
       expect(wsMock.instance.protocols).toEqual([]);
       expect(wsMock.instance.options).toEqual({
-        headers: { authorization: 'TEST_AUTH_KEY' },
+        headers: {
+          authorization: 'TEST_AUTH_KEY',
+          'x-surang-version': '0',
+        },
       });
     });
 
