@@ -87,6 +87,29 @@ through `surang config` command.
 
 ---
 
+### Errors you can encounter when trying to connect to Surang server:
+
+- `Unauthorized`: This can happen when AUTH_KEY configured at client doesn't match with the
+  one configured at server. Make sure both the AUTH_KEYs are same.
+  Server can also reject with this error if AUTH_KEY is not defined on server. Follow
+  instructions [here](https://github.com/RathiRohit/surang-server#steps-to-host-your-surang-server)
+  to set it up properly.
+  
+- `Version mismatch`: This happens if your Surang client's version doesn't match with that of
+  Surang server. Make sure to use client & server releases having same
+  [major](https://semver.org/#summary) version.
+  
+- `Already connected with another client`: Surang server can tunnel to only one client at a time.
+  If the server is connected to some other Surang client, it will reply with this error.
+  Make sure you are not connecting to same server again without stopping pervious client.
+  If you think someone else has connected to your Surang server (which means your AUTH_KEY
+  is probably compromised), change the AUTH_KEY and restart the server.
+  
+- `Unknown error`: Most of the time this will happen because of network failures and connection
+  breakdowns. If this happens frequently, raise an issue here.
+  
+---
+
 #### How is Surang different from [localtunnel](https://github.com/localtunnel/localtunnel)?
 
 'localtunnel' is great. It's open-source, free, supports multiple clients at once, and
