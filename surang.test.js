@@ -1,7 +1,10 @@
+jest.mock('./lib/heart');
+
 const WebSocket = require('ws');
 const fetch = require('node-fetch');
 const Surang = require('./surang');
 const transform = require('./lib/transformer');
+const Heart = require('./lib/Heart');
 
 const incomingRequest = {
   reqID: 'some-random-uuid-comes-here',
@@ -45,11 +48,14 @@ describe('Surang', () => {
       server: 'surang.example.com',
       secure: true,
     });
+    Heart.mockInstance?.beat.mockClear();
+    Heart.mockInstance?.die.mockClear();
   });
 
-  it('should emit "connect" event on successful connection', (done) => {
+  it('should emit "connect" event & beat on successful connection', (done) => {
     surangClient.on('connect', (url) => {
       expect(url).toBe('https://surang.example.com');
+      expect(Heart.mockInstance.beat).toHaveBeenCalledTimes(1);
       done();
     });
 
@@ -57,7 +63,7 @@ describe('Surang', () => {
     wsMock.emitOpen();
   });
 
-  it('should emit "disconnect" event on connection close', () => {
+  it('should emit "disconnect" event & die on connection close', () => {
     const emitSpy = jest.spyOn(surangClient, 'emit');
 
     surangClient.connect();
@@ -65,6 +71,7 @@ describe('Surang', () => {
 
     expect(emitSpy).toHaveBeenCalledTimes(1);
     expect(emitSpy).toHaveBeenCalledWith('disconnect');
+    expect(Heart.mockInstance.die).toHaveBeenCalledTimes(1);
   });
 
   it('should emit "error" event on error scenarios', (done) => {
@@ -140,6 +147,13 @@ describe('Surang', () => {
     wsMock.emitMessage(JSON.stringify(incomingRequest));
   });
 
+  it('should beat heart on ping from server', () => {
+    surangClient.connect();
+    wsMock.emitPing();
+
+    expect(Heart.mockInstance.beat).toHaveBeenCalledTimes(1);
+  });
+
   describe('connect', () => {
     it('should connect to ws server at given url with correct auth key', () => {
       surangClient.connect();
@@ -164,6 +178,23 @@ describe('Surang', () => {
       expect(wsMock.instance.options).toEqual({
         headers: { authorization: 'TEST_AUTH_KEY' },
       });
+    });
+
+    it('should kill beating heart if any and create new', () => {
+      surangClient = new Surang(8000, {
+        authKey: 'TEST_AUTH_KEY',
+        server: 'surang.example.com',
+        secure: false,
+      });
+      surangClient.connect();
+      expect(Heart.mockInstance).toBeDefined();
+      const oldHeart = Heart.mockInstance;
+
+      surangClient.disconnect();
+      surangClient.connect();
+      expect(Heart.mockInstance).not.toBe(oldHeart);
+      expect(Heart.mockInstance.connection).toBe(surangClient.connection);
+      expect(Heart.mockInstance.interval).toBe(45000);
     });
   });
 

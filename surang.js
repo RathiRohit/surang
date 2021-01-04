@@ -2,6 +2,9 @@ const EventEmitter = require('events');
 const fetch = require('node-fetch');
 const WebSocket = require('ws');
 const transform = require('./lib/transformer');
+const Heart = require('./lib/Heart');
+
+const HEART_BEAT_INTERVAL = 45000;
 
 class Surang extends EventEmitter {
   constructor(port, options) {
@@ -18,12 +21,22 @@ class Surang extends EventEmitter {
   }
 
   connect() {
+    if (this.heart) {
+      this.heart.die();
+    }
+
     this.connection = new WebSocket(this.wsURL, [], {
       headers: { authorization: this.authKey },
     });
+    this.heart = new Heart(this.connection, HEART_BEAT_INTERVAL);
 
     this.connection.on('open', () => {
+      this.heart.beat();
       this.emit('connect', this.basePath);
+    });
+
+    this.connection.on('ping', () => {
+      this.heart.beat();
     });
 
     this.connection.on('message', async (data) => {
@@ -49,6 +62,7 @@ class Surang extends EventEmitter {
     });
 
     this.connection.on('close', () => {
+      this.heart.die();
       this.emit('disconnect');
     });
 

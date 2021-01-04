@@ -20,6 +20,7 @@ WebSocket.mock = {
     WebSocket.mock.instance = null;
   },
   emitOpen: () => WebSocket.mock.instance.emit('open'),
+  emitPing: () => WebSocket.mock.instance.emit('ping'),
   emitMessage: (testRequestMsg) => WebSocket.mock.instance.emit('message', testRequestMsg),
   emitClose: () => WebSocket.mock.instance.emit('close'),
   emitError: (testError) => WebSocket.mock.instance.emit('error', testError),
