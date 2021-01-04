@@ -6,6 +6,10 @@
   A self-hostable WebSocket based tunneling solution to expose your localhost. 🚀
 </p>
 
+---
+
+<br/>
+
 > This is Surang client repository.
 > Check out [surang-server](https://github.com/RathiRohit/surang-server) for server code.
 
