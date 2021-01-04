@@ -1,13 +1,11 @@
-<img align="left" width="40%" src="surang.png">
+<p align="center">
+  <img width="40%" src="surang.png" alt="Surang logo"/>
+</p>
 
 A self-hostable WebSocket based tunneling solution to expose your localhost. :rocket:
 
 > This is Surang client repository.
 > Check out [surang-server](https://github.com/RathiRohit/surang-server) for server code.
-
-<br/>
-
----
 
 Surang allows you to expose your localhost server to the world through WebSocket based
 one-to-one tunnel. Surang is created to be easy to host on most of the hosting
