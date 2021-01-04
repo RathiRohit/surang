@@ -71,7 +71,11 @@ class Surang extends EventEmitter {
     });
 
     this.connection.on('unexpected-response', (_req, res) => {
-      this.emit('reject', res.headers['x-error']);
+      let body = '';
+      res.on('data', (chunk) => {
+        body += chunk;
+      });
+      res.on('end', () => this.emit('reject', body));
     });
 
     this.connection.on('error', (error) => {
