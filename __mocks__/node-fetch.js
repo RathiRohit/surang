@@ -5,9 +5,7 @@ fetch.mockImplementation(() => Promise.resolve({
   statusText: 'SUCCESS',
   type: 'application/json',
   headers: {
-    'set-cookie': 'TEST_COOKIE_HEADER',
-    keys: () => ['set-cookie'],
-    get: () => 'TEST_COOKIE_HEADER',
+    forEach: (cb) => cb('TEST_COOKIE_HEADER', 'set-cookie'),
   },
   text: () => Promise.resolve({
     testKey1: 'testValue1',
