@@ -110,6 +110,18 @@ through `surang config` command.
   
 ---
 
+### Known issues & limitations:
+
+- As WebSocket messages are used to transfer request & response information, response data with
+  'chunked transfer encoding' can not be handled correctly. To overcome this, Surang client will
+  always send `Accept-Encoding: identity` header to local server, overriding any encoding headers
+  from original client.
+  
+- Large binary resources (like images & other media files) will probably fail to load over
+  tunneled connection.
+  
+---
+
 #### How is Surang different from [localtunnel](https://github.com/localtunnel/localtunnel)?
 
 'localtunnel' is great. It's open-source, free, supports multiple clients at once, and
