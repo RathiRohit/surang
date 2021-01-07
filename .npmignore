@@ -1,0 +1,11 @@
+.idea
+__mocks__
+coverage
+
+*.test.js
+jest.config.js
+.eslintrc.js
+
+surang.png
+
+.eslintcache
