@@ -120,6 +120,9 @@ through `surang config` command.
 - Large binary resources (like images & other media files) will probably fail to load over
   tunneled connection.
   
+- As Surang client itself connects to surang-server through WebSocket connection, trying to use
+  WebSockets over the tunnel will probably not work.
+  
 ---
 
 #### How is Surang different from [localtunnel](https://github.com/localtunnel/localtunnel)?
