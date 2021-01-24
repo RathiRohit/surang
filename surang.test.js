@@ -1,4 +1,4 @@
-jest.mock('./lib/heart');
+jest.mock('./lib/Heart');
 
 const WebSocket = require('ws');
 const fetch = require('node-fetch');
