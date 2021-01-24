@@ -7,6 +7,7 @@ module.exports = {
     '!**/node_modules/**',
     '!**/coverage/**',
     '!**/__mocks__/**',
+    '!**/__integration__/**',
     '!**/bin/**',
     '!.eslintrc.js',
     '!jest.config.js',
@@ -27,6 +28,7 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: [
     '**/*.test.js',
+    '!**/integration.test.js',
   ],
   testPathIgnorePatterns: [
     '/node_modules/',

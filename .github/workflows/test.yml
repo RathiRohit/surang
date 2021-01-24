@@ -17,3 +17,24 @@ jobs:
       - run: npm install --global yarn
       - run: yarn install --frozen-lockfile
       - run: yarn test
+  integration-test:
+    name: Integration test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install --global yarn jest
+      - run: yarn install --frozen-lockfile
+      - run: CLIENT_MAJOR=$(git describe --tags --abbrev=0 | cut -d'.' -f1 | cut -d'v' -f2)
+      - run: echo "Surang client version - ${CLIENT_MAJOR}"
+      - run: cd __integration__ && git clone https://github.com/RathiRohit/surang-server.git
+      - run: cd surang-server && SERVER=$(git describe --tags --abbrev=0 --match "v${CLIENT_MAJOR}.*")
+      - run: echo "Surang server version - ${SERVER}"
+      - run: git checkout "tags/${SERVER}"
+      - run: yarn install --frozen-lockfile
+      - run: AUTH_KEY=something-secret yarn start &
+      - run: SERVER_JOB=$!
+      - run: cd .. && jest integration.test.js --config='{}'
+      - run: kill $SERVER_JOB
