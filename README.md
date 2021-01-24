@@ -120,6 +120,9 @@ through `surang config` command.
 - Large binary resources (like images & other media files) will probably fail to load over
   tunneled connection.
   
+- As Surang client itself connects to surang-server through WebSocket connection, trying to use
+  WebSockets over the tunnel will probably not work.
+  
 ---
 
 #### How is Surang different from [localtunnel](https://github.com/localtunnel/localtunnel)?
@@ -142,3 +145,9 @@ hosted on Heroku's free tier](https://github.com/localtunnel/server/issues/88).)
     Everyone is supposed to host their own surang-server.
   - `localtunnel` is mature and has great community, `surang` is in early phase and might not
     work for all types of requests yet.
+    
+---
+
+<a href="https://www.buymeacoffee.com/RathiRohit" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="160" />
+</a>
