@@ -32,36 +32,33 @@ jobs:
         with:
           fetch-depth: 0
       - name: Fetch all git tags
-        working-directory: ./surang/surang
         run: |
           git fetch --force --tags
       - name: Install client dependencies
-        working-directory: ./surang/surang
         run: |
           npm install --global yarn jest
           yarn install --frozen-lockfile
           echo $(git describe --tags --abbrev=0 | cut -d'.' -f1 | cut -d'v' -f2) > CLIENT_MAJOR
       - name: Surang client version
-        working-directory: ./surang/surang
         run: |
           echo "Surang client version - $(cat CLIENT_MAJOR)"
       - name: Clone server repo
-        working-directory: ./surang/surang/__integration__
+        working-directory: ./__integration__
         run: |
           git clone https://github.com/RathiRohit/surang-server.git
       - name: Surang server version
-        working-directory: ./surang/surang/__integration__/surang-server
+        working-directory: ./__integration__/surang-server
         run: |
           echo $(git describe --tags --abbrev=0 --match "v$(cat ../../CLIENT_MAJOR).*") > SERVER
           echo "Surang server version - $(cat SERVER)"
       - name: Checkout server version & install dependencies
-        working-directory: ./surang/surang/__integration__/surang-server
+        working-directory: ./__integration__/surang-server
         run: |
           git checkout "tags/$(cat SERVER)"
           yarn install --frozen-lockfile
           rm -rf __mocks__
       - name: Start surang server & test integration
-        working-directory: ./surang/surang/__integration__/surang-server
+        working-directory: ./__integration__/surang-server
         run: |
           nohup yarn start &
           echo $! > SERVER_JOB
