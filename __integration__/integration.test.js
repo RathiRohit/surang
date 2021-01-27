@@ -6,6 +6,8 @@ jest.unmock('ws');
 
 jest.setTimeout(60000);
 
+const path = require('path');
+
 const fs = jest.requireActual('fs-extra');
 const fetch = jest.requireActual('node-fetch');
 
@@ -122,7 +124,9 @@ describe('surang tunnel', () => {
 
     const surangResponse = await fetch(`http://localhost:${SURANG_SERVER_PORT}/get-file`, request);
     const fileResponse = new Uint8Array(await surangResponse.arrayBuffer());
-    const expectedFileResponse = new Uint8Array(fs.readFileSync('./responses/get-file.css', null).buffer);
+    const expectedFileResponse = new Uint8Array(
+      fs.readFileSync(path.join(__dirname, 'responses', 'get-file.css'), null).buffer,
+    );
     const normalResponse = await fetch(`http://localhost:${TEST_SERVER_PORT}/get-file`, request);
 
     expect(surangResponse.status).toBe(200);
